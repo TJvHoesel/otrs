@@ -55,11 +55,8 @@
                 <h2>$Text{"Hint"}</h2>
             </div>
             <div class="Content">
-                <p class="FieldExplanation">
-                    $Text{"Agents will be needed to handle tickets."}
-                </p>
                 <p>
-                    $Text{"Attention"}: $Text{"Don't forget to add a new agent to groups and/or roles!"}
+                    $Text{"You'll need some agents to handle tickets."}
                 </p>
             </div>
         </div>
