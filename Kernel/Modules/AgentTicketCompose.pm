@@ -170,8 +170,8 @@ sub Run {
     my %GetParam;
     for (
         qw(
-        From To Cc Bcc Subject Body InReplyTo References ResponseID ReplyArticleID StateID
-        ArticleID ArticleTypeID TimeUnits Year Month Day Hour Minute FormID ReplyAll
+        From To Cc Bcc Subject Body InReplyTo References ResponseID ReplyArticleID StateID TypeID
+        ArticleID ArticleTypeID TimeUnits Year Month Day Hour Minute FormID ReplyAll 
         )
         )
     {
@@ -842,6 +842,15 @@ sub Run {
                 Day      => $GetParam{Day},
                 Hour     => $GetParam{Hour},
                 Minute   => $GetParam{Minute},
+            );
+        }
+
+        # set ticket type
+        if ( $Self->{ConfigObject}->Get('Ticket::Type') && $Self->{Config}->{TicketType} ) {
+            $Self->{TicketObject}->TicketTypeSet (
+                UserID   => $Self->{UserID},
+                TicketID => $Self->{TicketID},
+                TypeID   => $GetParam{TypeID},
             );
         }
 
@@ -1738,6 +1747,30 @@ sub _Mask {
             %Param,
         },
     );
+
+    # types
+    if ( $Self->{ConfigObject}->Get('Ticket::Type') && $Self->{Config}->{TicketType} ) {
+        my %Type = $Self->{TicketObject}->TicketTypeList(
+            %Param,
+            Action => $Self->{Action},
+            UserID => $Self->{UserID},
+        );
+
+        $Param{TypeStrg} = $Self->{LayoutObject}->BuildSelection(
+            Class => 'Validate_Required' . ( $Param{Errors}->{TypeIDInvalid} || ' ' ),
+            Data  => \%Type,
+            Name  => 'TypeID',
+            SelectedID   => $Param{TypeID},
+            PossibleNone => 1,
+            Sort         => 'AlphanumericValue',
+            Translation  => 0,
+        );
+
+        $Self->{LayoutObject}->Block(
+            Name => 'TicketType',
+            Data => {%Param},
+        );
+    }
 
     # Dynamic fields
     # cycle trough the activated Dynamic Fields for this screen

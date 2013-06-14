@@ -353,6 +353,22 @@ $Include{"RichTextEditor"}
                     </div>
                     <div class="Clear"></div>
 
+<!-- dtl:block:TicketType -->
+                    <label class="Mandatory" for="TypeID"><span class="Marker">*</span> $Text{"Type"}:</label>
+                    <div class="Field">
+                        $Data{"TypeStrg"}
+                        <div id="TypeIDError" class="TooltipErrorMessage"><p>$Text{"This field is required."}</p></div>
+                        <div id="TypeIDServerError" class="TooltipErrorMessage"><p>$Text{"This field is required."}</p></div>
+<!--dtl:js_on_document_complete-->
+<script type="text/javascript">//<![CDATA[
+    $('#TypeID').bind('change', function (Event) {
+        Core.AJAX.FormUpdate($('#ComposeTicket'), 'AJAXUpdate', 'TypeID', ['Dest', 'NewUserID', 'NewResponsibleID', 'NextStateID', 'PriorityID', 'ServiceID', 'SLAID', 'SignKeyID', 'CryptKeyID', $Data{"DynamicFieldNamesStrg"}, 'To', 'Cc', 'Bcc']);
+    });
+//]]></script>
+<!--dtl:js_on_document_complete-->
+                    </div>
+                    <div class="Clear"></div>
+<!-- dtl:block:TicketType -->
                     <label>$Text{"Pending Date"} ($Text{"for pending* states"}):</label>
                     <div class="Field">
                         $Data{"PendingDateString"}
